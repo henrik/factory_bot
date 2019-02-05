@@ -75,6 +75,7 @@ module FactoryBot
 
   class << self
     delegate :factories,
+             :inline_sequences,
              :sequences,
              :traits,
              :callbacks,
@@ -108,12 +109,17 @@ module FactoryBot
     sequence
   end
 
+  def self.register_inline_sequence(sequence)
+    inline_sequences.push(sequence)
+  end
+
   def self.sequence_by_name(name)
     sequences.find(name)
   end
 
   def self.rewind_sequences
     sequences.each(&:rewind)
+    inline_sequences.each(&:rewind)
   end
 
   def self.register_trait(trait)
